@@ -26,7 +26,7 @@
       (get-pixel imp h w))))
 
 (defn quick-sound
-  "Takes values from get-pixels and makes a little song."
+  "Takes values from get-pixels and makes a little sound."
   [pixels]
   (let [filtered-pix (remove #(= % (first pixels)) pixels)
         pos-pix (map #(if (pos? %) % (unchecked-negate %)) filtered-pix)
