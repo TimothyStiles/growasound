@@ -3,7 +3,7 @@
 Hey igem peoples and others. This is just a neat little proof of concept that turns an image into a sound.
 
 
-## Usage
+## usage
 
 <code>cd</code> into the project and then execute <code>lein run</code> and you
 should hear a sound!
