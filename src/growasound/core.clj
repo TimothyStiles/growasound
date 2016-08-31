@@ -38,7 +38,3 @@
   "For playing out in BASH"
   []
   (quick-sound (get-pixels test-image)))
-
-
-
-     
