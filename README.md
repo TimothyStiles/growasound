@@ -3,12 +3,12 @@
 Hey igem peoples and others. This is just a neat little proof of concept that turns an image into a sound.
 
 
-## Usage
+## usage
 
 <code>cd</code> into the project and then execute <code>lein run</code> and you
 should hear a sound!
 
-If you haven't installed leiningen instructions can be found [here](leiningen.org).
+If you haven't installed leiningen instructions can be found [here](https://leiningen.org/).
 
 The first time you run the code you should run <code>lein deps</code> just to 
 make sure that your system has all of the depencies.
