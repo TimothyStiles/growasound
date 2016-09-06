@@ -1,6 +1,8 @@
 (ns growasound.core
-  (:use [funimage imp])
-  (:require 
+  (:require
+   [funimage.imp :as i]
+   [funimage.imp.threshold :as t]
+   [funimage.segmentation.imp :as s]
    [overtone.live :as o]
    [overtone.inst.piano :as p]
    [overtone.studio.mixer :as m])
@@ -23,24 +25,24 @@
 ; -Tim
 
 (def test-image
-  (open-imp "resources/poke.png"))
+  (i/open-imp "resources/poke.png"))
 
 (defn get-pixels
   "Takes an image and creates numerical values corresponding to pixels."
   [imp]
-  (let [width (range 0 (get-width imp))
-        height (range 0 (get-height imp))]
+  (let [width (range 0 (i/get-width imp))
+        height (range 0 (i/get-height imp))]
     (for [h height w width]
-      (get-pixel imp h w))))
+      (i/get-pixel imp h w))))
 
-#_(defn quick-sound
+(defn quick-sound
   "Takes values from get-pixels and makes a little sound."
   [pixels]
   (let [filtered-pix (remove #(= % (first pixels)) pixels)
         pos-pix (map #(if (pos? %) % (unchecked-negate %)) filtered-pix)
         notes (map #(rem % 48) pos-pix)
         rhythm (reverse (map #(rem % 500) pos-pix))]
-    (do (show-imp (copy-imp test-image))
+    (do (i/show-imp (i/copy-imp test-image))
         (m/recording-start "poke-scream.wav")
         (doall (map #(o/at (+ (o/now) %1) (p/piano %2)) rhythm notes))
         (Thread/sleep 10000)
@@ -48,10 +50,19 @@
 
 (defn song
   "takes image. Makes song."
-  [pixels]
-  (let [notes "pi"]
-    p))
-  (defn -main 
+  [imp]
+  (let [imp (if (t/thresholdable-imp? imp) imp (i/convert-to-16bit (i/copy-imp imp)))
+        mask (t/autothreshold (i/copy-imp imp) :otsu false false false false false false)
+        pixel-mask (map #(if (zero? %) 0 1) (get-pixels (i/copy-imp mask)))
+        pixels (get-pixels (i/copy-imp imp))
+        background-sub (map #(* %1 %2) pixels pixel-mask)
+        pos-pix (map #(if (pos? %) % (unchecked-negate %)) background-sub)
+        notes (map #(rem % 48) pos-pix)
+        bars (map #(distinct (remove zero? %)) (partition (i/get-width (i/copy-imp imp)) notes))]
+    bars))
+
+
+(defn -main 
   "For playing out in BASH"
   [&args]
   (quick-sound (get-pixels test-image)))
