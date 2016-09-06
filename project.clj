@@ -5,4 +5,4 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [overtone "0.10.1"]
-                 [funimage "0.1.89"]])
+                 [funimage "0.1.90"]])

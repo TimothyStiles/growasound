@@ -33,7 +33,7 @@
     (for [h height w width]
       (get-pixel imp h w))))
 
-(defn quick-sound
+#_(defn quick-sound
   "Takes values from get-pixels and makes a little sound."
   [pixels]
   (let [filtered-pix (remove #(= % (first pixels)) pixels)
@@ -46,6 +46,11 @@
         (Thread/sleep 10000)
         (m/recording-stop))))
 
+(defn song
+  "takes image. Makes song."
+  [pixels]
+  (let [notes "pi"]
+    p))
   (defn -main 
   "For playing out in BASH"
   [&args]
