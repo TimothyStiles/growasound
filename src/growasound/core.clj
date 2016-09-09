@@ -48,6 +48,11 @@
         (Thread/sleep 10000)
         (m/recording-stop))))
 
+(defn play-bar
+  "takes bar and makes some noise!"
+  [bar]
+  (doall (map #(p/piano %) bar)))
+
 (defn song
   "takes image. Makes song."
   [imp]
@@ -58,9 +63,9 @@
         background-sub (map #(* %1 %2) pixels pixel-mask)
         pos-pix (map #(if (pos? %) % (unchecked-negate %)) background-sub)
         notes (map #(rem % 48) pos-pix)
-        bars (map #(distinct (remove zero? %)) (partition (i/get-width (i/copy-imp imp)) notes))]
-    bars))
-
+        bars (map #(distinct (remove zero? %)) (partition (i/get-width (i/copy-imp imp)) notes))
+        rhythm (map #(* % 500) (range 0 (count bars)))]
+   (doall (map #(o/at (+ (o/now) %1) (play-bar %2)) rhythm bars))))
 
 (defn -main 
   "For playing out in BASH"
